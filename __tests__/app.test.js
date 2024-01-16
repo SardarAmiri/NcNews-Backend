@@ -21,7 +21,6 @@ describe('Integreation App Testing For EndPoints', () => {
             return request(app).get('/api/topics')
             .then((response) => {
                 const {body} = response
-                console.log(body)
                 expect(body.topics).toBeInstanceOf(Array);
                 expect(body.topics).toHaveLength(3);
                 body.topics.forEach(topic => {
@@ -41,5 +40,23 @@ describe('Integreation App Testing For EndPoints', () => {
                 expect(body.msg).toBe('endpoint not found')
             })
         })
+    })
+    describe('CORE: GET /api', () => {
+        test('status 200', () => {
+            return request(app)
+            .get('/api')
+            .expect(200)
+        })
+        test('provide a description of all endpoints available', () => {
+            return request(app).get('/api')
+            .expect(200)
+            .then(({body}) => {
+            const endpoints = body.description
+            expect(body.description).toBeInstanceOf(Array)
+            expect(body.description).toEqual(endpoints)
+            })
+            
+        })
+       
     })
 })
