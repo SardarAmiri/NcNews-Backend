@@ -54,8 +54,44 @@ describe('Integreation App Testing For EndPoints', () => {
             expect(body.description).toBeInstanceOf(Array)
             expect(body.description).toEqual([ 'GET /api', 'GET /api/topics', 'GET /api/articles' ])
             })
-            
         })
-       
+    })
+    describe('CORE: GET /api/articles/:article_id', () => {
+        test('status 200: on /api/articles/:article_id', () => {
+            return request(app)
+            .get('/api')
+            .expect(200)
+        })
+        test('status 200: with an article object with all properties', () => {
+            return request(app).get('/api/articles/3')
+            .then(({body}) => {
+                expect(body).toBeInstanceOf(Object)
+                expect(Object.keys(body.articles)).toHaveLength(8)
+                expect(body.articles).toMatchObject({
+                        article_id: 3,
+                        title: 'Eight pug gifs that remind me of mitch',
+                        topic: 'mitch',
+                        author: 'icellusedkars',
+                        body: 'some gifs',
+                        created_at: '2020-11-03T09:12:00.000Z',
+                        votes: 0,
+                        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+                })
+            })
+        })
+        test('status 404: with a response msg No user found for user_id: id', () => {
+            return request(app).get('/api/articles/1000')
+            .expect(404)
+            .then(({body}) => {
+                expect(body.msg).toBe('No user found for user_id: 1000')
+            })
+        })
+        test('status 400: with a response msg Bad request', () => {
+            return request(app).get('/api/articles/banana')
+            .expect(400)
+            .then(({body}) => {
+                expect(body.msg).toBe('Bad request')
+            })
+        })
     })
 })
