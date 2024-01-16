@@ -9,7 +9,7 @@ beforeEach(() => {
 })
 
 afterAll(() => {
-    db.end();
+    return db.end();
 })
 
 describe('Integreation App Testing For EndPoints', () => {
@@ -21,15 +21,18 @@ describe('Integreation App Testing For EndPoints', () => {
             return request(app).get('/api/topics')
             .then((response) => {
                 const {body} = response
-                expect(body).toBeInstanceOf(Array);
-                expect(body).toHaveLength(3);
-                body.forEach(topic => {
+                console.log(body)
+                expect(body.topics).toBeInstanceOf(Array);
+                expect(body.topics).toHaveLength(3);
+                body.topics.forEach(topic => {
                     expect(topic).toHaveProperty('slug', expect.any(String))
                     expect(topic).toHaveProperty('description', expect.any(String))
                 });
             })
             
         })   
+    })
+    describe('For All non-exsitance path', () => {
         test('404: responds with 404 when path is not exist', () => {
             return request(app)
             .get('/api/topecs')
@@ -38,6 +41,5 @@ describe('Integreation App Testing For EndPoints', () => {
                 expect(body.msg).toBe('endpoint not found')
             })
         })
-        
     })
 })
