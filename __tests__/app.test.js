@@ -51,9 +51,8 @@ describe('Integreation App Testing For EndPoints', () => {
             return request(app).get('/api')
             .expect(200)
             .then(({body}) => {
-            const endpoints = body.description
             expect(body.description).toBeInstanceOf(Array)
-            expect(body.description).toEqual(endpoints)
+            expect(body.description).toEqual([ 'GET /api', 'GET /api/topics', 'GET /api/articles' ])
             })
             
         })
