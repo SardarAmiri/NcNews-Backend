@@ -94,4 +94,43 @@ describe('Integreation App Testing For EndPoints', () => {
             })
         })
     })
+    describe('CORE: GET /api/articles', () => {
+        test('status 200 on /api/articles', () => {
+            return request(app).get('/api/articles').expect(200)
+        })
+        test('status 200: respond with an articles array of article objects with all properties', () => {
+            return request(app).get('/api/articles')
+            .then(({body}) => {
+                // console.log(body)
+                expect(body.article).toBeInstanceOf(Array);
+                expect(body.article).toHaveLength(13);
+                body.article.forEach(art => {
+                    expect(typeof art.author).toBe('string')
+                    expect(typeof art.title).toBe('string')
+                    expect(typeof art.article_id).toBe('number')
+                    expect(typeof art.topic).toBe('string')
+                    expect(typeof art.created_at).toBe('string')
+                    expect(typeof art.votes).toBe('number')
+                    expect(typeof art.article_img_url).toBe('string')
+                    expect(typeof art.comment_count).toBe('number')
+                    
+
+                });
+               
+            })
+        })
+        test('by default the articles should be sorted by date in descending order.', () => {
+            return request(app).get('/api/articles')
+            .then(({body}) => {
+                expect(body.article).toBeSorted({ descending: true });
+            })
+        })
+        test('404 status: respond with msg not found', () => {
+            return request(app).get('/api/articls')
+            .expect(404)
+            .then(({body}) => {
+                expect(body.msg).toBe('endpoint not found')
+            })
+        })
+    })
 })

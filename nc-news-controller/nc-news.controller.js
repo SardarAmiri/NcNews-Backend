@@ -1,5 +1,5 @@
 const CustomError = require('../utils/customError')
-const { fetchAllTopics, fetchAllApi, fetchArticleById} = require('../nc-news-model/nc-news.model')
+const { fetchAllTopics, fetchAllApi, fetchArticleById, fetchArticles} = require('../nc-news-model/nc-news.model')
 
 
 
@@ -29,8 +29,13 @@ module.exports.getArticleById = (req, res, next) => {
             next(err)
         }else{
             next(err)
-        }
-        
-            
+        }    
+    })
+}
+
+module.exports.getArticles = (req, res) => {
+    fetchArticles()
+    .then((result) => {
+        res.status(200).send({article: result})
     })
 }
