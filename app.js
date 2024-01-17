@@ -1,7 +1,7 @@
 const express = require('express')
 const CustomError = require('./utils/customError')
 const errorHandlerMiddleware = require('./nc-news-controller/errorController')
-const { getTopics, getApi, getArticleById, getArticles} = require('./nc-news-controller/nc-news.controller')
+const { getTopics, getApi, getArticleById, getArticles, getComments} = require('./nc-news-controller/nc-news.controller')
 
 
 const app = express()
@@ -12,6 +12,7 @@ app.get('/api/topics', getTopics)
 app.get('/api', getApi)
 app.get('/api/articles/:article_id', getArticleById)
 app.get('/api/articles', getArticles)
+app.get('/api/articles/:article_id/comments', getComments)
 
 
 app.all('*', (req, res, next) => {

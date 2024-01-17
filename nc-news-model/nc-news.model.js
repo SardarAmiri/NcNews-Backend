@@ -36,3 +36,14 @@ module.exports.fetchArticles = () => {
             return result.rows
         })
 }
+
+module.exports.fetchComments = (article_id) => {
+    return db.query("SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC", [article_id])
+    .then((result) => {
+        if(result.rows.length === 0){
+            const err = new CustomError(`No user found for user_id: ${article_id}`, 404)
+            return Promise.reject(err)
+        }
+        return result.rows
+    })
+}

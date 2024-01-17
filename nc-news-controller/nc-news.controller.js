@@ -1,5 +1,5 @@
 const CustomError = require('../utils/customError')
-const { fetchAllTopics, fetchAllApi, fetchArticleById, fetchArticles} = require('../nc-news-model/nc-news.model')
+const { fetchAllTopics, fetchAllApi, fetchArticleById, fetchArticles, fetchComments} = require('../nc-news-model/nc-news.model')
 
 
 
@@ -24,12 +24,7 @@ module.exports.getArticleById = (req, res, next) => {
         res.status(200).send({articles: result})
     })
     .catch((err) => {
-        if(err.code === '22P02'){
-            const err = new CustomError('Bad request', 400)
-            next(err)
-        }else{
-            next(err)
-        }    
+        next(err)   
     })
 }
 
@@ -37,5 +32,16 @@ module.exports.getArticles = (req, res) => {
     fetchArticles()
     .then((result) => {
         res.status(200).send({article: result})
+    })
+}
+
+module.exports.getComments = (req, res, next) => {
+    const {article_id} = req.params
+    fetchComments(article_id)
+    .then((result) => {
+        res.status(200).send({comments: result})
+    })
+    .catch((err) => {
+        next(err)
     })
 }
