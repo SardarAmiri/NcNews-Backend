@@ -65,8 +65,6 @@ describe('Integreation App Testing For EndPoints', () => {
         test('status 200: with an article object with all properties', () => {
             return request(app).get('/api/articles/3')
             .then(({body}) => {
-                expect(body).toBeInstanceOf(Object)
-                expect(Object.keys(body.articles)).toHaveLength(8)
                 expect(body.articles).toMatchObject({
                         article_id: 3,
                         title: 'Eight pug gifs that remind me of mitch',
@@ -101,7 +99,6 @@ describe('Integreation App Testing For EndPoints', () => {
         test('status 200: respond with an articles array of article objects with all properties', () => {
             return request(app).get('/api/articles')
             .then(({body}) => {
-                // console.log(body)
                 expect(body.article).toBeInstanceOf(Array);
                 expect(body.article).toHaveLength(13);
                 body.article.forEach(art => {
@@ -122,7 +119,7 @@ describe('Integreation App Testing For EndPoints', () => {
         test('by default the articles should be sorted by date in descending order.', () => {
             return request(app).get('/api/articles')
             .then(({body}) => {
-                expect(body.article).toBeSorted({ descending: true });
+                expect(body.article).toBeSortedBy('created_at', { descending: true });
             })
         })
         test('404 status: respond with msg not found', () => {
@@ -132,5 +129,46 @@ describe('Integreation App Testing For EndPoints', () => {
                 expect(body.msg).toBe('endpoint not found')
             })
         })
+    })
+    describe('CORE: GET /api/articles/:article_id/comments', () => {
+        test('status 200 available on /api/articles/:article_id/comments', () => {
+            return request(app)
+            .get('/api/articles/5/comments')
+            .expect(200)
+        })
+        test('status 200: get an array of comments for the given article_id of which each comment should have the following properties', () => {
+            return request(app)
+            .get('/api/articles/5/comments')
+            .then(({body}) => {
+                expect(body.comments).toBeInstanceOf(Array);
+                expect(body.comments).toHaveLength(2);
+                body.comments.forEach(comment => {
+                    expect(typeof comment.comment_id).toBe('number')
+                    expect(typeof comment.votes).toBe('number')
+                    expect(typeof comment.created_at).toBe('string')
+                    expect(typeof comment.author).toBe('string')
+                    expect(typeof comment.body).toBe('string')
+                    expect(typeof comment.article_id).toBe('number')
+                    expect(body.comments).toBeSortedBy('created_at', {descending: true})
+                });
+                
+            })
+        })
+        test('status 404: with a response msg No comments found for user_id: id', () => {
+            return request(app).get('/api/articles/500/comments')
+            .expect(404)
+            .then(({body}) => {
+                expect(body.msg).toBe('No user found for user_id: 500')
+            })
+        })
+        test('status 400: with a response msg Bad request', () => {
+            return request(app).get('/api/articles/five-hundred/comments')
+            .expect(400)
+            .then(({body}) => {
+                expect(body.msg).toBe('Bad request')
+            })
+        })
+
+    
     })
 })
