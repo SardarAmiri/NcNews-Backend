@@ -36,7 +36,6 @@ module.exports.getArticleById = (req, res, next) => {
 module.exports.getArticles = (req, res) => {
     fetchArticles()
     .then((result) => {
-        console.log(result)
         res.status(200).send({article: result})
     })
 }
