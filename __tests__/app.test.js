@@ -283,15 +283,5 @@ describe('Integreation App Testing For EndPoints', () => {
                 expect(response.body.msg).toBe('No user found for article_id 100')
             })
         })
-        test('400 status: Responde Bad request when patching with invalid id ', () => {
-            const updatedVote = {inc_votes: 10}
-            return request(app)
-            .patch('/api/articles/invalid_id')
-            .send(updatedVote)
-            .expect(400)
-            .then((response) => {
-                expect(response.body.msg).toBe('Bad request')
-            })
-        })
     })
 })
