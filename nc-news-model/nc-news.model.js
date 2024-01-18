@@ -47,3 +47,15 @@ module.exports.fetchComments = (article_id) => {
         return result.rows
     })
 }
+
+module.exports.createCommentOnArticle = (article_id, {username, body}) => {
+    return db.query(`INSERT INTO comments 
+    (body, votes, author, article_id) 
+    VALUES
+    ($1, $2, $3, $4) RETURNING *`, [body, votes = 0, username, article_id])
+    .then((result) => {
+        return result.rows[0]
+    })
+    
+
+}
