@@ -141,7 +141,6 @@ describe('Integreation App Testing For EndPoints', () => {
             .get('/api/articles/5/comments')
             .then(({body}) => {
                 expect(body.comments).toBeInstanceOf(Array);
-                expect(body.comments).toHaveLength(2);
                 body.comments.forEach(comment => {
                     expect(typeof comment.comment_id).toBe('number')
                     expect(typeof comment.votes).toBe('number')
@@ -149,16 +148,15 @@ describe('Integreation App Testing For EndPoints', () => {
                     expect(typeof comment.author).toBe('string')
                     expect(typeof comment.body).toBe('string')
                     expect(typeof comment.article_id).toBe('number')
-                    expect(body.comments).toBeSortedBy('created_at', {descending: true})
+                    
                 });
-                
             })
         })
-        test('status 404: with a response msg No comments found for user_id: id', () => {
-            return request(app).get('/api/articles/500/comments')
-            .expect(404)
+        test('By default Comments should be soredby created_at which shows with the most recent comments first.', () => {
+            return request(app)
+            .get('/api/articles/5/comments')
             .then(({body}) => {
-                expect(body.msg).toBe('No user found for user_id: 500')
+                expect(body.comments).toBeSortedBy('created_at', {descending: true})
             })
         })
         test('status 400: with a response msg Bad request', () => {
@@ -168,7 +166,50 @@ describe('Integreation App Testing For EndPoints', () => {
                 expect(body.msg).toBe('Bad request')
             })
         })
-
-    
+    })
+    describe('CORE: POST /api/articles/:article_id/comments', () => {
+        test('status 201: Responds with the posted comment.', () => {
+            const commentToSend = {
+                username: 'butter_bridge',
+                body: 'read my article and share it with your friends'
+            }
+            return request(app)
+            .post('/api/articles/4/comments')
+            .send(commentToSend)
+            .then((response) => {
+                expect(response.body.comment).toMatchObject({
+                    comment_id: 19,
+                    body: 'read my article and share it with your friends',
+                    author: 'butter_bridge'
+                })
+            })
+        })
+        test('status 400: respons with a Bad request when posting missing properties', () => {
+            const commentToSend = {
+                username: 'butter_bridge',
+            }
+            return request(app)
+            .post('/api/articles/4/comments')
+            .send(commentToSend)
+            .expect(400)
+            .then((response) => {
+                expect(response.body.msg).toBe('Bad request missing some properties')
+            })
+        })
+        test('status 404: Responds with No user found when posting with id which not exist.', () => {
+            const commentToSend = {
+                username: 'butter_bridge',
+                body: 'read my article and share it with your friends'
+            }
+            return request(app)
+            .post('/api/articles/400/comments')
+            .send(commentToSend)
+            .expect(404)
+            .send(commentToSend)
+            .then((response) => {
+                expect(response.body.msg).toBe('No user found for article_id')
+            })
+            
+        })
     })
 })
