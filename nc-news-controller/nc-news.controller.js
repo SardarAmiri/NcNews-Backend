@@ -1,5 +1,5 @@
 const CustomError = require('../utils/customError')
-const { fetchAllTopics, fetchAllApi, fetchArticleById, fetchArticles, fetchComments, createCommentOnArticle} = require('../nc-news-model/nc-news.model')
+const { fetchAllTopics, fetchAllApi, fetchArticleById, fetchArticles, fetchComments, createCommentOnArticle, updateArticleVoteById} = require('../nc-news-model/nc-news.model')
 
 
 
@@ -55,6 +55,17 @@ module.exports.postCommentOnArticle = (req, res, next) => {
     .catch((err) => {
         next(err)
     })
-    
-    
+}
+
+module.exports.patchArticlesById = (req, res, next) => {
+    const {article_id} = req.params
+    const {inc_votes} = req.body
+    updateArticleVoteById(article_id, inc_votes)
+    .then((result) => {
+        res.status(200).send({article: result})
+    })
+    .catch((err) => {
+        next(err)
+    })
+   
 }

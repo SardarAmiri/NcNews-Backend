@@ -241,4 +241,57 @@ describe('Integreation App Testing For EndPoints', () => {
             
         })
     })
+    describe('CORE: PATCH /api/articles/:article_id' , () => {
+        test('status 200: Responds with the updated article', () => {
+            const updatedVote = {inc_votes: 10}
+            return request(app)
+            .patch('/api/articles/1')
+            .send(updatedVote)
+            .expect(200)
+            .then((response) => {
+                expect(response.body).toMatchObject({
+                    article: {
+                        article_id: 1,
+                        title: "Living in the shadow of a great man",
+                        topic: "mitch",
+                        author: "butter_bridge",
+                        body: "I find this existence challenging",
+                        votes: 110,
+                        article_img_url:
+                        "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+                      }
+                })
+            })
+        })
+        test('400 status: Responde Bad request when patching with invalid id ', () => {
+            const updatedVote = {inc_votes: 10}
+            return request(app)
+            .patch('/api/articles/invalid_id')
+            .send(updatedVote)
+            .expect(400)
+            .then((response) => {
+                expect(response.body.msg).toBe('Bad request')
+            })
+        })
+        test('404 status: Responde No Content when update an article ', () => {
+            const updatedVote = {inc_votes: 10}
+            return request(app)
+            .patch('/api/articles/100')
+            .send(updatedVote)
+            .expect(404)
+            .then((response) => {
+                expect(response.body.msg).toBe('No user found for article_id 100')
+            })
+        })
+        test('400 status: Responde Bad request when patching with invalid id ', () => {
+            const updatedVote = {inc_votes: 10}
+            return request(app)
+            .patch('/api/articles/invalid_id')
+            .send(updatedVote)
+            .expect(400)
+            .then((response) => {
+                expect(response.body.msg).toBe('Bad request')
+            })
+        })
+    })
 })

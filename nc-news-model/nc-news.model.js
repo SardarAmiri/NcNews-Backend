@@ -56,6 +56,17 @@ module.exports.createCommentOnArticle = (article_id, {username, body}) => {
     .then((result) => {
         return result.rows[0]
     })
-    
+}
+
+module.exports.updateArticleVoteById = (article_id, inc_votes) => {
+
+    return db.query(`UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *`, [inc_votes, article_id])
+    .then((result) => {
+        if(result.rows.length === 0){
+            const err = new CustomError(`No user found for article_id ${article_id}`, 404)
+            return Promise.reject(err)
+        }
+        return result.rows[0]
+    })
 
 }
