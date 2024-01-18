@@ -168,6 +168,23 @@ describe('Integreation App Testing For EndPoints', () => {
         })
     })
     describe('CORE: POST /api/articles/:article_id/comments', () => {
+        test('Status 201, ignores unnecessary properties.', () => {
+            const commentToSend = {
+                username: 'butter_bridge',
+                body: 'read my article and share it with your friends',
+                name: 'username'
+            }
+            return request(app)
+            .post('/api/articles/4/comments')
+            .send(commentToSend)
+            .then((response) => {
+                expect(response.body.comment).toMatchObject({
+                    comment_id: 19,
+                    body: 'read my article and share it with your friends',
+                    author: 'butter_bridge'
+                })
+            })
+        })
         test('status 201: Responds with the posted comment.', () => {
             const commentToSend = {
                 username: 'butter_bridge',
@@ -193,7 +210,19 @@ describe('Integreation App Testing For EndPoints', () => {
             .send(commentToSend)
             .expect(400)
             .then((response) => {
-                expect(response.body.msg).toBe('Bad request missing some properties')
+                expect(response.body.msg).toBe('Bad request')
+            })
+        })
+        test('Status 400, invalid ID, e.g. string of "not-an-id"', () => {
+            const commentToSend = {
+                username: 'butter_bridge',
+            }
+            return request(app)
+            .post('/api/articles/not-an-id/comments')
+            .send(commentToSend)
+            .expect(400)
+            .then((response) => {
+                expect(response.body.msg).toBe('Bad request')
             })
         })
         test('status 404: Responds with No user found when posting with id which not exist.', () => {

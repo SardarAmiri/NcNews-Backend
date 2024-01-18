@@ -1,12 +1,8 @@
 const CustomError = require("../utils/customError");
 
 module.exports = (error, req, res, next) => {
-    if(error.code === '22P02'){
+    if(error.code === '22P02' || error.code === '23502'){
         const err = new CustomError('Bad request', 400)
-        err.statusCode = err.statusCode || 500;
-        res.status(err.statusCode).send({msg: err.message})
-    }else if(error.code === '23502'){
-        const err = new CustomError('Bad request missing some properties', 400)
         err.statusCode = err.statusCode || 500;
         res.status(err.statusCode).send({msg: err.message})
     }
