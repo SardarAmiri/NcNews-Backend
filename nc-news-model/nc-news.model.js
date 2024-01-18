@@ -63,10 +63,21 @@ module.exports.updateArticleVoteById = (article_id, inc_votes) => {
     return db.query(`UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *`, [inc_votes, article_id])
     .then((result) => {
         if(result.rows.length === 0){
-            const err = new CustomError(`No user found for article_id ${article_id}`, 404)
+            const err = new CustomError(`No article found for article_id ${article_id}`, 404)
             return Promise.reject(err)
         }
         return result.rows[0]
     })
+}
 
+module.exports.removedCommentsById = (comment_id) => {
+    return db.query(`DELETE FROM comments WHERE comment_id = $1 RETURNING *`, [comment_id])
+    .then((result) => {
+        if(result.rows.length === 0){
+            const err = new CustomError(`No comment found for comment_id ${comment_id}`, 404)
+            return Promise.reject(err)
+        }
+        return result
+    })
+    
 }

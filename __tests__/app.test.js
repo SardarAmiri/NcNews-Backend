@@ -263,7 +263,7 @@ describe('Integreation App Testing For EndPoints', () => {
                 })
             })
         })
-        test('400 status: Responde Bad request when patching with invalid id ', () => {
+        test('400 status: Respond Bad request when patching with invalid id ', () => {
             const updatedVote = {inc_votes: 10}
             return request(app)
             .patch('/api/articles/invalid_id')
@@ -273,15 +273,42 @@ describe('Integreation App Testing For EndPoints', () => {
                 expect(response.body.msg).toBe('Bad request')
             })
         })
-        test('404 status: Responde No Content when update an article ', () => {
+        test('404 status: Responde No Content when update an article that does not exist', () => {
             const updatedVote = {inc_votes: 10}
             return request(app)
             .patch('/api/articles/100')
             .send(updatedVote)
             .expect(404)
             .then((response) => {
-                expect(response.body.msg).toBe('No user found for article_id 100')
+                expect(response.body.msg).toBe('No article found for article_id 100')
             })
+        })
+        test('400 status: Responde Bad request when patching an invalid type data', () => {
+            const updatedVote = {inc_votes: 'banana'}
+            return request(app)
+            .patch('/api/articles/1')
+            .send(updatedVote)
+            .expect(400)
+            .then((response) => {
+                expect(response.body.msg).toBe('Bad request')
+            })
+        })
+    })
+    describe('CORE: DELETE /api/comments/:comment_id', () => {
+        test('204 status: Responds with status 204 and no content', () => {
+            return request(app)
+            .delete('/api/comments/5')
+            .expect(204)
+        })
+        test('400 status: responds 400 with msg Bad request when there is invalid comment_id', () => {
+            return request(app)
+            .delete('/api/comments/invalid_id')
+            .expect(400)
+        })
+        test('404 status: responds 404 while deleting a non-existant comment_id', () => {
+            return request(app)
+            .delete('/api/comments/500')
+            .expect(404)
         })
     })
 })
