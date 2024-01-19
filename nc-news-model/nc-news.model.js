@@ -20,14 +20,28 @@ module.exports.fetchAllApi = () => {
 }
 
 module.exports.fetchArticleById = (id) => {
-    return db.query("SELECT * FROM articles WHERE article_id = $1;", [id])
-    .then((respons) => {
-        if(respons.rows.length === 0){
-            const err = new CustomError(`No user found for user_id: ${id}`, 404)
-            return Promise.reject(err)
-        }
-        return respons.rows[0]
+    // return db.query("SELECT * FROM articles WHERE article_id = $1;", [id])
+    const articleQuery = `SELECT * FROM articles WHERE article_id = ${id}`;
+    const commentCountQuery = `SELECT COUNT(*) AS comment_count FROM comments WHERE article_id = ${id}`;
+    const article = db.query(articleQuery)
+    const comment = db.query(commentCountQuery)
+    return Promise.all([article, comment])
+    .then(([article, comment]) => {
+        const art = article.rows[0]
+        const count = comment.rows[0].comment_count
+        if( article.rows.length === 0){
+                    const err = new CustomError(`No user found for user_id: ${id}`, 404)
+                    return Promise.reject(err)
+                }
+                return {art, count}
     })
+    // .then((respons) => {
+    //     if(respons.rows.length === 0){
+    //         const err = new CustomError(`No user found for user_id: ${id}`, 404)
+    //         return Promise.reject(err)
+    //     }
+    //     return respons.rows[0]
+    // })
 }
 
 module.exports.fetchArticles = (topic) => {

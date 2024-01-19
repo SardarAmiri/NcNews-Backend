@@ -20,10 +20,14 @@ module.exports.getApi = (req, res) => {
 }
 
 module.exports.getArticleById = (req, res, next) => {
-    const article_id= req.params.article_id * 1
+    const {article_id}= req.params
     fetchArticleById(article_id)
     .then((result) => {
-        res.status(200).send({articles: result})
+        const articleWithCommentCount = {
+            ...result.art,
+            comment_count: result.count,
+          };
+        res.status(200).send({articles: articleWithCommentCount})
     })
     .catch((err) => {
         next(err)   

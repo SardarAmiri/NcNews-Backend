@@ -1,7 +1,7 @@
 const CustomError = require("../utils/customError");
 
 module.exports = (error, req, res, next) => {
-    if(error.code === '22P02' || error.code === '23502'){
+    if(error.code === '22P02' || error.code === '23502' || error.code === '42703'){
         const err = new CustomError('Bad request', 400)
         err.statusCode = err.statusCode || 500;
         res.status(err.statusCode).send({msg: err.message})
