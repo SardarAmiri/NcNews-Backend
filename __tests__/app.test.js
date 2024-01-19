@@ -350,5 +350,26 @@ describe('Integreation App Testing For EndPoints', () => {
         })
         
     })
+    describe('CORE: GET /api/articles/:article_id (comment_count)', () => {
+        test('200 status: responds with an article objects which should include the total count of all comments with that article id ' , () => {
+            return request(app)
+            .get('/api/articles/3')
+            .expect(200) 
+            .then(({body}) => {
+                expect(body.articles).toMatchObject({
+                        article_id: 3,
+                        title: 'Eight pug gifs that remind me of mitch',
+                        topic: 'mitch',
+                        author: 'icellusedkars',
+                        body: 'some gifs',
+                        created_at: '2020-11-03T09:12:00.000Z',
+                        votes: 0,
+                        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+                        comment_count: '2'
+                })
+            })
+
+        })
+    })
    
 })
