@@ -81,3 +81,10 @@ module.exports.removedCommentsById = (comment_id) => {
     })
     
 }
+
+module.exports.fetchUsers = () => {
+   return db.query(`SELECT  * FROM users`)
+   .then((result) => {
+    return result.rows
+   })
+}

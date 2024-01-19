@@ -34,7 +34,7 @@ describe('Integreation App Testing For EndPoints', () => {
     describe('For All non-exsitance path', () => {
         test('404: responds with 404 when path is not exist', () => {
             return request(app)
-            .get('/api/topecs')
+            .get('/')
             .expect(404)
             .then(({body}) => {
                 expect(body.msg).toBe('endpoint not found')
@@ -311,4 +311,21 @@ describe('Integreation App Testing For EndPoints', () => {
             .expect(404)
         })
     })
+    describe('CORE: GET /api/users', () => {
+        test('200 status, Responds with an array of objects', () => {
+            return request(app)
+            .get('/api/users')
+            .expect(200)
+            .then((response) => {
+                response.body.users.forEach((user) => {
+                    expect(user).toHaveProperty('username',expect.any(String))
+                    expect(user).toHaveProperty('name', expect.any(String))
+                    expect(user).toHaveProperty('avatar_url', expect.any(String))
+                })
+            })
+        })
+        
+    })
+
+   
 })
