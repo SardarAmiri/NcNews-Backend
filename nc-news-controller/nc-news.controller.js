@@ -1,5 +1,7 @@
 const CustomError = require('../utils/customError')
-const { fetchAllTopics, fetchAllApi, fetchArticleById, fetchArticles, fetchComments, createCommentOnArticle, updateArticleVoteById, removedCommentsById} = require('../nc-news-model/nc-news.model')
+const { fetchAllTopics, fetchAllApi, fetchArticleById, fetchArticles, 
+    fetchComments, createCommentOnArticle, updateArticleVoteById, removedCommentsById
+, fetchUsers} = require('../nc-news-model/nc-news.model')
 
 
 
@@ -79,3 +81,10 @@ module.exports.deleteCommentsById = (req, res, next) =>{
         next(err)
     })
 }
+
+module.exports.getUsers = (req, res) => {
+    fetchUsers().then((result) => {
+        res.status(200).send({users: result})
+    })
+}
+

@@ -1,7 +1,9 @@
 const express = require('express')
 const CustomError = require('./utils/customError')
 const errorHandlerMiddleware = require('./nc-news-controller/errorController')
-const { getTopics, getApi, getArticleById, getArticles, getComments, postCommentOnArticle, patchArticlesById, deleteCommentsById} = require('./nc-news-controller/nc-news.controller')
+const { getTopics, getApi, getArticleById, getArticles, getComments,
+     postCommentOnArticle, patchArticlesById, deleteCommentsById,
+     getUsers, getTopicByQuery} = require('./nc-news-controller/nc-news.controller')
 
 
 const app = express()
@@ -18,6 +20,8 @@ app.get('/api/articles/:article_id/comments', getComments)
 app.post('/api/articles/:article_id/comments', postCommentOnArticle)
 app.patch('/api/articles/:article_id', patchArticlesById)
 app.delete('/api/comments/:comment_id', deleteCommentsById)
+
+app.get('/api/users', getUsers)
 
 app.all('*', (req, res, next) => {
     const err = new CustomError('endpoint not found', 404)
