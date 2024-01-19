@@ -99,9 +99,9 @@ describe('Integreation App Testing For EndPoints', () => {
         test('status 200: respond with an articles array of article objects with all properties', () => {
             return request(app).get('/api/articles')
             .then(({body}) => {
-                expect(body.article).toBeInstanceOf(Array);
-                expect(body.article).toHaveLength(13);
-                body.article.forEach(art => {
+                expect(body.articles).toBeInstanceOf(Array);
+                expect(body.articles).toHaveLength(13);
+                body.articles.forEach(art => {
                     expect(typeof art.author).toBe('string')
                     expect(typeof art.title).toBe('string')
                     expect(typeof art.article_id).toBe('number')
@@ -119,7 +119,7 @@ describe('Integreation App Testing For EndPoints', () => {
         test('by default the articles should be sorted by date in descending order.', () => {
             return request(app).get('/api/articles')
             .then(({body}) => {
-                expect(body.article).toBeSortedBy('created_at', { descending: true });
+                expect(body.articles).toBeSortedBy('created_at', { descending: true });
             })
         })
         test('404 status: respond with msg not found', () => {
@@ -326,6 +326,29 @@ describe('Integreation App Testing For EndPoints', () => {
         })
         
     })
+     
+    describe('CORE: GET /api/articles (topic query)', () => {
+        test('200 status: responds the articles which filters by the topic value' , () => {
+            return request(app)
+            .get('/api/articles?topic=mitch')
+            .expect(200) 
+            .then(({body}) => {
+                expect(body.articles.rows).toHaveLength(12)
+                body.articles.rows.forEach((article) => {
+                    expect(article.topic).toBe('mitch')
+                })
+            })
 
+        })
+        test('200 status: responds with empty array when no articles found for the query', () => {
+            return request(app)
+            .get('/api/articles?topic=paper')
+            .expect(200)
+            .then(({body}) => {
+                expect(body.articles.rows).toEqual([])
+            })
+        })
+        
+    })
    
 })

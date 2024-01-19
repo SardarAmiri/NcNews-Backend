@@ -31,10 +31,11 @@ module.exports.getArticleById = (req, res, next) => {
 }
 
 module.exports.getArticles = (req, res) => {
-    fetchArticles()
-    .then((result) => {
-        res.status(200).send({article: result})
-    })
+    const {topic} = req.query
+        fetchArticles(topic)
+        .then((result) => {
+            res.status(200).send({articles: result})
+        })
 }
 
 module.exports.getComments = (req, res, next) => {
