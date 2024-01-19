@@ -24,8 +24,8 @@ module.exports.getArticleById = (req, res, next) => {
     fetchArticleById(article_id)
     .then((result) => {
         const articleWithCommentCount = {
-            ...result.art,
-            comment_count: result.count,
+            ...result.requestedArticle,
+            comment_count: result.numberOfComments,
           };
         res.status(200).send({articles: articleWithCommentCount})
     })
