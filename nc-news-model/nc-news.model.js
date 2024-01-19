@@ -27,21 +27,15 @@ module.exports.fetchArticleById = (id) => {
     const comment = db.query(commentCountQuery)
     return Promise.all([article, comment])
     .then(([article, comment]) => {
-        const art = article.rows[0]
-        const count = comment.rows[0].comment_count
+        const requestedArticle = article.rows[0]
+        const numberOfComments = comment.rows[0].comment_count
         if( article.rows.length === 0){
                     const err = new CustomError(`No user found for user_id: ${id}`, 404)
                     return Promise.reject(err)
                 }
-                return {art, count}
+                return {requestedArticle, numberOfComments}
     })
-    // .then((respons) => {
-    //     if(respons.rows.length === 0){
-    //         const err = new CustomError(`No user found for user_id: ${id}`, 404)
-    //         return Promise.reject(err)
-    //     }
-    //     return respons.rows[0]
-    // })
+    
 }
 
 module.exports.fetchArticles = (topic) => {
