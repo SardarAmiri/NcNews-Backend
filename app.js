@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const CustomError = require('./utils/customError')
 const errorHandlerMiddleware = require('./nc-news-controller/errorController')
 const { getTopics, getApi, getArticleById, getArticles, getComments,
@@ -7,6 +8,7 @@ const { getTopics, getApi, getArticleById, getArticles, getComments,
 
 
 const app = express()
+app.use(cors())
 app.use(express.json())
 
 
