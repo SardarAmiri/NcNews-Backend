@@ -101,7 +101,6 @@ describe('Integreation App Testing For EndPoints', () => {
             .then(({body}) => {
                 expect(body.articles).toBeInstanceOf(Array);
                 expect(body.articles).toHaveLength(13);
-                console.log(body.articles)
                 body.articles.forEach(art => {
                     expect(typeof art.author).toBe('string')
                     expect(typeof art.title).toBe('string')
