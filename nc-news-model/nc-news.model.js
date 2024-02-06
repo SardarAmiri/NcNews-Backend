@@ -39,7 +39,7 @@ module.exports.fetchArticleById = (id) => {
 }
 
 module.exports.fetchArticles = (topic) => {
-        let sql1 = "SELECT a.author, a.title, a.article_id, a.topic, a.created_at, a.votes, a.article_img_url, CAST(COUNT (c.comment_id) AS INTEGER) AS comment_count FROM articles AS a LEFT JOIN comments AS c ON a.article_id = c.article_id"
+        let sql1 = "SELECT a.author, a.title, a.article_id, a.topic, a.body, a.created_at, a.votes, a.article_img_url, CAST(COUNT (c.comment_id) AS INTEGER) AS comment_count FROM articles AS a LEFT JOIN comments AS c ON a.article_id = c.article_id"
         let sqlQuery = " WHERE topic = $1"
         let sql2 = " GROUP BY a.author, a.title, a.article_id, a.topic, a.created_at, a.votes, a.article_img_url ORDER BY a.created_at DESC;"
         if(topic){
