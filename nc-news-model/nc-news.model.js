@@ -17,19 +17,8 @@ module.exports.fetchAllApi = () => {
   //       console.log(json);
   //       return json;
   //     });
-  return fs.readFile("./endpoints.json", "utf8", (err, data) => {
-    if (err) {
-      callback(err);
-      return;
-    }
-
-    try {
-      const jsonData = JSON.parse(data);
-      const jsonString = JSON.stringify(jsonData);
-      callback(null, jsonString);
-    } catch (parseError) {
-      callback(parseError);
-    }
+  return fs.readFile("./endpoints.json", "utf8").then((data) => {
+    return JSON.parse(data);
   });
 };
 
