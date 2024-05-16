@@ -25,7 +25,8 @@ module.exports.fetchAllApi = () => {
 
     try {
       const jsonData = JSON.parse(data);
-      callback(null, jsonData);
+      const jsonString = JSON.stringify(jsonData);
+      callback(null, jsonString);
     } catch (parseError) {
       callback(parseError);
     }
