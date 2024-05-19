@@ -36,7 +36,7 @@ module.exports.getArticles = (req, res) => {
   const { topic } = req.query;
 
   fetchArticles(topic).then((result) => {
-    res.status(200).send({ articles: result.rows });
+    res.status(200).send({ articles: result });
   });
 };
 
