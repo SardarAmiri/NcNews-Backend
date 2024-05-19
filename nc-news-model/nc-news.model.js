@@ -1,29 +1,12 @@
-const { response } = require("../app");
 const db = require("../db/connection");
-const fs = require("fs/promises");
 const CustomError = require("../utils/customError");
 module.exports.fetchAllTopics = () => {
-  // console.log('I am in model')
   return db.query("SELECT * FROM topics").then((topicsData) => {
     return topicsData.rows;
   });
 };
 
-module.exports.fetchAllApi = () => {
-  //   return fs
-  //     .readFile("./endpoints.json", "utf-8", (err, data))
-  //     .then((result) => {
-  //       const json = JSON.parse(result);
-  //       console.log(json);
-  //       return json;
-  //     });
-  return fs.readFile("./endpoints.json", "utf8").then((data) => {
-    return JSON.parse(data);
-  });
-};
-
 module.exports.fetchArticleById = (id) => {
-  // return db.query("SELECT * FROM articles WHERE article_id = $1;", [id])
   const articleQuery = `SELECT * FROM articles WHERE article_id = ${id}`;
   const commentCountQuery = `SELECT COUNT(*) AS comment_count FROM comments WHERE article_id = ${id}`;
   const article = db.query(articleQuery);
@@ -73,14 +56,24 @@ module.exports.fetchComments = (article_id) => {
     });
 };
 
-module.exports.createCommentOnArticle = (article_id, { username, body }) => {
+module.exports.createCommentOnArticle = async (
+  article_id,
+  { username, body }
+) => {
+  const articleCheck = await db.query(
+    "SELECT * FROM articles WHERE article_id = $1",
+    [article_id]
+  );
+  if (articleCheck.rows.length === 0) {
+    throw { code: "23503" };
+  }
   return db
     .query(
       `INSERT INTO comments 
     (body, votes, author, article_id) 
     VALUES
     ($1, $2, $3, $4) RETURNING *`,
-      [body, (votes = 0), username, article_id]
+      [body, 0, username, article_id]
     )
     .then((result) => {
       return result.rows[0];
