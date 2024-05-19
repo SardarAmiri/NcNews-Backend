@@ -1,7 +1,6 @@
 const CustomError = require("../utils/customError");
 
 module.exports = (error, req, res, next) => {
-  console.log(error);
   if (
     error.code === "22P02" ||
     error.code === "23502" ||
