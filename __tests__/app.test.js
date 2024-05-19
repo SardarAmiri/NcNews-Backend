@@ -198,7 +198,6 @@ describe("Integreation App Testing For EndPoints", () => {
         .post("/api/articles/4/comments")
         .send(commentToSend)
         .then((response) => {
-          // console.log(response.body);
           expect(response.body.comment).toMatchObject({
             comment_id: 19,
             body: "read my article and share it with your friends",
