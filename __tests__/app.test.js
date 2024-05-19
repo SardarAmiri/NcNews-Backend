@@ -329,8 +329,9 @@ describe("Integreation App Testing For EndPoints", () => {
         .get("/api/articles?topic=mitch")
         .expect(200)
         .then(({ body }) => {
-          expect(body.articles.rows).toHaveLength(12);
-          body.articles.rows.forEach((article) => {
+          console.log(body);
+          expect(body.articles).toHaveLength(12);
+          body.articles.forEach((article) => {
             expect(article.topic).toBe("mitch");
           });
         });
@@ -340,7 +341,7 @@ describe("Integreation App Testing For EndPoints", () => {
         .get("/api/articles?topic=paper")
         .expect(200)
         .then(({ body }) => {
-          expect(body.articles.rows).toEqual([]);
+          expect(body.articles).toEqual([]);
         });
     });
   });

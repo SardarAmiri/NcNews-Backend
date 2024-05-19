@@ -34,8 +34,9 @@ module.exports.getArticleById = (req, res, next) => {
 
 module.exports.getArticles = (req, res) => {
   const { topic } = req.query;
+
   fetchArticles(topic).then((result) => {
-    res.status(200).send({ articles: result });
+    res.status(200).send({ articles: result.rows });
   });
 };
 
