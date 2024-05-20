@@ -10,7 +10,7 @@ Building and testing an API to access application data programmatically, mimicki
 
 ### Setup:
 
-#1 Clone the repository: https://github.com/kneeshuh/ni-be-nc-news
+#1 Clone the repository: [https://github.com/SardarAmiri/nc-news-week](https://)
 #2 Install dependencies:
 (Find a list of these by typing npm ls in your terminal, or see below) - dotenv - express - husky - jest - jest-extended - jest-sorted - pg - pg-format - supertest
 #3 Seed databases:
