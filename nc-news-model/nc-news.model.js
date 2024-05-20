@@ -37,7 +37,7 @@ module.exports.fetchArticles = (topic) => {
   }
   sql1 += sql2;
   return db.query(sql1).then((result) => {
-    return result.rows;
+    return result.rows[0];
   });
 };
 

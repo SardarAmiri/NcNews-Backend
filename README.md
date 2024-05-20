@@ -1,34 +1,31 @@
 # Northcoders News API
 
-follow this instruction in order to create the environment variables,
-In Express.js, you can use the dotenv library to manage environment variables easily. Environment variables are often used to store configuration settings for your application, such as database connection strings, API keys, and other sensitive information. Here's a step-by-step guide on how to create and use environment variables in an Express.js application:
+### Link to hosted version:
 
-1. Install dotenv:
+[https://newsapp-7o7y.onrender.com/api/articles](https://)
 
-npm install dotenv
+### Project Summary:
 
-2. Create a .env File:
-   We'll have two databases in this project: nc_news Database for real-looking dev data, and nc_news_test Database for simpler test data.
-   You will need to create two .env files for your project: .env.test and .env.development. Into each, add PGDATABASE=, with the correct database name for that environment. in this case you can add your nc_news database inside your .env.development and nc_news_test database inside your .env.test
+Building and testing an API to access application data programmatically, mimicking a real world backend service. NC News is a database created with PSQL, and interacted with using node-postgres. The database contains tables for users, topics, articles, and comments - similar to what you might expect to find for a service like Reddit. Multiple requests can be made to the database in order to interact with the data - including GET, POST, PATCH, and DELETE requests. These requests can be used along multiple paths to receive specific types of data, e.g. to get articles filtered by topic, or to delete a comment using its unique id.
 
-3. Use dotenv in Your Express Application:
-   In your main application file (e.g., app.js or index.js), require and configure dotenv near the top of the file:
+### Setup:
 
-require('dotenv').config();
-This line reads the variables from your .env file and adds them to process.env
+#1 Clone the repository: https://github.com/kneeshuh/ni-be-nc-news
+#2 Install dependencies:
+(Find a list of these by typing npm ls in your terminal, or see below) - dotenv - express - husky - jest - jest-extended - jest-sorted - pg - pg-format - supertest
+#3 Seed databases:
+(Look in the package.json file for scripts for setting up and seeding, or see below) - Setup databases: npm run setup-dbs - Seed database with development data: npm run seed - Seed database with test data and run tests: npm run test - Seed with production data: npm run seed-prod
 
-4. Connecting to the database and Access Environment Variables in Your Code:
-   You can now access the environment variables using process.env throughout your application. For example:
+### To create the correct environment variables and run the project locally:
 
-const { Pool } = require('pg');
-const ENV = process.env.NODE_ENV || 'development';
+#1 Look in the db/setup.sql file to find the relevant database names
+#2 Create two .env files in the root - one for testing, and one for development purposes
+#3 In .env.development write in: PGDATABASE=name_of_database (found in db/setup.sql file)
+#4 In .env.test write in: PGDATABASE=name_of_database_test
+#5 In the .gitignore file add .env.\* to ensure you don't push these variables to GitHub.
 
-require('dotenv').config({
-path: `${__dirname}/../.env.${ENV}`,
-});
+- In the event of creating a production database, also create a third .env file (.env.production) and write in: DATABASE_URL:<link_to_hosted_database>
 
-if (!process.env.PGDATABASE) {
-throw new Error('PGDATABASE not set');
-}
+### Minimum versions required to run project:
 
-module.exports = new Pool();
+Node.js v21.2.0 Postgres v14.10
