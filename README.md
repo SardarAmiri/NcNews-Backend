@@ -2,7 +2,7 @@
 
 ### Link to hosted version:
 
-[https://newsapp-7o7y.onrender.com/api/articles](https://)
+[https://ni-nc-news.onrender.com/api](https://)
 
 ### Project Summary:
 
@@ -10,13 +10,13 @@ Building and testing an API to access application data programmatically, mimicki
 
 ### Setup:
 
-#1 Clone the repository: [https://github.com/SardarAmiri/nc-news-week](https://)
+#1 Clone the repository: [https://github.com/SardarAmiri/NcNews-Backend](https://)
 #2 Install dependencies:
 (Find a list of these by typing npm ls in your terminal, or see below) - dotenv - express - husky - jest - jest-extended - jest-sorted - pg - pg-format - supertest
 #3 Seed databases:
 (Look in the package.json file for scripts for setting up and seeding, or see below) - Setup databases: npm run setup-dbs - Seed database with development data: npm run seed - Seed database with test data and run tests: npm run test - Seed with production data: npm run seed-prod
 
-### To create the correct environment variables and run the project locally:
+### [To create the correct environment variables and run the project locally:](https://)
 
 #1 Look in the db/setup.sql file to find the relevant database names
 #2 Create two .env files in the root - one for testing, and one for development purposes
