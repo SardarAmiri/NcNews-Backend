@@ -11,16 +11,17 @@ const {
   patchArticlesById,
   deleteCommentsById,
   getUsers,
+  getAPI,
 } = require("./nc-news-controller/nc-news.controller");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/api", getAPI);
 app.get("/api/topics", getTopics);
 app.get("/api/articles/:article_id", getArticleById);
 app.get("/api/articles", getArticles);
-// app.get("/api/articles?topic=value", getArticles);
 app.get("/api/articles/:article_id/comments", getComments);
 
 app.post("/api/articles/:article_id/comments", postCommentOnArticle);

@@ -49,10 +49,7 @@ describe("Integreation App Testing For EndPoints", () => {
       return request(app)
         .get("/api")
         .expect(200)
-        .then(({ body }) => {
-          // expect(body.description).toBeInstanceOf(Array)
-          // expect(body.description).toEqual([ 'GET /api', 'GET /api/topics', 'GET /api/articles' ])
-        });
+        .then(({ body }) => {});
     });
   });
   describe("CORE: GET /api/articles/:article_id", () => {

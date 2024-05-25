@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const CustomError = require("../utils/customError");
 const {
   fetchAllTopics,
@@ -10,6 +12,18 @@ const {
   removedCommentsById,
   fetchUsers,
 } = require("../nc-news-model/nc-news.model");
+
+module.exports.getAPI = (req, res) => {
+  const endpointsPath = path.join(__dirname, "../endpoints.json");
+  console.log(endpointsPath);
+  fs.readFile(endpointsPath, "utf8", (err, data) => {
+    if (err) {
+      res.status(500).send({ error: "Failed to load endpoints data" });
+    } else {
+      res.json(JSON.parse(data));
+    }
+  });
+};
 
 module.exports.getTopics = (req, res) => {
   fetchAllTopics().then((result) => {
